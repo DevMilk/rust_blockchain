@@ -25,7 +25,7 @@ pub struct Transaction{
 fn get_sum(outvecs: &Vec<Output>) -> u64{
     return outvecs
         .iter()
-        .map(|x| x.amount) //Linq select 
+        .map(|x| x.amount) //Similiar to Linq .Select in C# 
         .sum();
 }
 fn get_hashes(outvecs: &Vec<Output>) -> HashSet<Hash>{
@@ -63,13 +63,13 @@ impl Hashable for Transaction {
         bytes.extend(
             self.inputs
                 .iter()
-                .flat_map(|input| input.bytes()) //
+                .flat_map(|input| input.bytes())
                 .collect::<Vec<u8>>()
         );
         bytes.extend(
             self.outputs
                 .iter()
-                .flat_map(|output| output.bytes()) //
+                .flat_map(|output| output.bytes())
                 .collect::<Vec<u8>>()
         );
         

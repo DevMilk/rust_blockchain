@@ -6,6 +6,7 @@ pub struct Blockchain {
     unspent_outputs: HashSet<Hash>//Current state of unspent outputs
 }
 
+//Enum for error handling
 #[derive(Debug)]
 pub enum BlockValidationErr {
     MismatchedIndex,
@@ -61,6 +62,8 @@ impl Blockchain {
             let mut block_created: HashSet<Hash> = HashSet::new();
             
             let mut total_fee = 0;
+
+            //Iterate through transactions to calculate total fee, spent blocks and new blocks
             for transaction in transactions {
                 let input_hashes = transaction.input_hashes();
 
@@ -89,13 +92,14 @@ impl Blockchain {
 
             block_created.extend(coinbase.output_hashes());
             
-            //Remove spent blocks
+            //Remove spent blocks because we used them for transaction and fee calculation
             self.unspent_outputs.retain(|output| 
                 !block_spent.contains(output)); 
             self.unspent_outputs.extend(block_created);
 
         }
 
+        //Add block to blockchain
         self.blocks.push(block);
         return Ok(());
     }
